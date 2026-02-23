@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
+from .descriptions import generate_description
 
 # Piatti con emoji
 dishes = {
@@ -9,19 +10,19 @@ dishes = {
     "dolci": ["🍰 Tiramisù", "🍮 Panna cotta", "🍨 Gelato", "🧁 Cupcake"]
 }
 
-# Frasi creative
-adjectives = ["delizioso", "gustoso", "succulento", "irresistibile", "saporito"]
-
-def generate_menu(items_per_category: int = 2, style: str = "classico"):
+def generate_menu(items_per_category: int = 2, style: str = "classico", exclude: list = None):
     """
-    Genera un menu casuale in stile AI Chef.
-    - items_per_category: quanti piatti per categoria
-    - style: 'classico' o 'creativo' (aggiunge aggettivi)
+    Genera un menu completo con descrizioni
+    - items_per_category: quante portate per categoria
+    - style: classico, creativo, gourmet
+    - exclude: lista di ingredienti/emoji da escludere
     """
+    exclude = exclude or []
     menu = {}
     for category, options in dishes.items():
-        selected = random.sample(options, min(items_per_category, len(options)))
-        if style == "creativo":
-            selected = [f"{dish} ({random.choice(adjectives)})" for dish in selected]
-        menu[category] = selected
+        # filtra piatti che contengono elementi esclusi
+        filtered = [d for d in options if all(e not in d for e in exclude)]
+        selected = random.sample(filtered, min(items_per_category, len(filtered)))
+        # aggiunge descrizione “AI”
+        menu[category] = [{"dish": dish, "description": generate_description(dish, style)} for dish in selected]
     return menu
