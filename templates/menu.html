@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='it'>
+<head>
+    <meta charset='UTF-8'>
+    <title>AI Chef Pro Menu</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #fff5e6; }
+        h1 { color: #d35400; }
+        .category { margin-bottom: 30px; }
+        .dish { margin: 5px 0; }
+        .desc { color: #555; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>??? Menu AI Chef Pro</h1>
+    {% for category, items in menu.items() %}
+        <div class="category">
+            <h2>{{ category|capitalize }}</h2>
+            {% for item in items %}
+                <div class="dish">{{ item.dish }} <span class="desc">{{ item.description }}</span></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>
